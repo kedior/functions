@@ -39,13 +39,13 @@ func (r Result2[A, B]) Or(defaultA A, defaultB B) (A, B) {
 	return r.a, r.b
 }
 
-func Try2[T any](fn func() (error, T)) Result[T] {
-	err, t := fn()
+func Try2[T any](fn func() (T, error)) Result[T] {
+	t, err := fn()
 	return Result[T]{data: t, err: err}
 }
 
-func Try3[A, B any](fn func() (error, A, B)) Result2[A, B] {
-	err, a, b := fn()
+func Try3[A, B any](fn func() (A, B, error)) Result2[A, B] {
+	a, b, err := fn()
 	return Result2[A, B]{a, b, err}
 }
 
