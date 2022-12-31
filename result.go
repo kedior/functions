@@ -39,54 +39,10 @@ func (r Result2[A, B]) Or(defaultA A, defaultB B) (A, B) {
 	return r.a, r.b
 }
 
-func Try2[T any](fn func() (T, error)) Result[T] {
-	t, err := fn()
-	return Result[T]{data: t, err: err}
+func Try2[T any](val T, err error) Result[T] {
+	return Result[T]{data: val, err: err}
 }
 
-func Try3[A, B any](fn func() (A, B, error)) Result2[A, B] {
-	a, b, err := fn()
+func Try3[A, B any](a A, b B, err error) Result2[A, B] {
 	return Result2[A, B]{a, b, err}
-}
-
-func RetRev[A, B any](fn func() (A, B)) func() (B, A) {
-	a, b := fn()
-	return func() (B, A) {
-		return b, a
-	}
-}
-
-func RetRevACB[A, B, C any](fn func() (A, B, C)) func() (A, C, B) {
-	a, b, c := fn()
-	return func() (A, C, B) {
-		return a, c, b
-	}
-}
-
-func RetRevBAC[A, B, C any](fn func() (A, B, C)) func() (B, A, C) {
-	a, b, c := fn()
-	return func() (B, A, C) {
-		return b, a, c
-	}
-}
-
-func RetRevBCA[A, B, C any](fn func() (A, B, C)) func() (B, C, A) {
-	a, b, c := fn()
-	return func() (B, C, A) {
-		return b, c, a
-	}
-}
-
-func RetRevCAB[A, B, C any](fn func() (A, B, C)) func() (C, A, B) {
-	a, b, c := fn()
-	return func() (C, A, B) {
-		return c, a, b
-	}
-}
-
-func RetRevCBA[A, B, C any](fn func() (A, B, C)) func() (C, B, A) {
-	a, b, c := fn()
-	return func() (C, B, A) {
-		return c, b, a
-	}
 }

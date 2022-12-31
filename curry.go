@@ -95,3 +95,35 @@ func Curry52[A, B, C, D, E, X, Y any](fn func(A, B, C, D, E) (X, Y)) func(A) fun
 		})
 	}
 }
+
+func Curry23[A, B, X, Y, Z any](fn func(A, B) (X, Y, Z)) func(A) func(B) (X, Y, Z) {
+	return func(a A) func(B) (X, Y, Z) {
+		return func(b B) (X, Y, Z) {
+			return fn(a, b)
+		}
+	}
+}
+
+func Curry33[A, B, C, X, Y, Z any](fn func(A, B, C) (X, Y, Z)) func(A) func(B) func(C) (X, Y, Z) {
+	return func(a A) func(B) func(C) (X, Y, Z) {
+		return Curry23(func(b B, c C) (X, Y, Z) {
+			return fn(a, b, c)
+		})
+	}
+}
+
+func Curry43[A, B, C, D, X, Y, Z any](fn func(A, B, C, D) (X, Y, Z)) func(A) func(B) func(C) func(D) (X, Y, Z) {
+	return func(a A) func(B) func(C) func(D) (X, Y, Z) {
+		return Curry33(func(b B, c C, d D) (X, Y, Z) {
+			return fn(a, b, c, d)
+		})
+	}
+}
+
+func Curry53[A, B, C, D, E, X, Y, Z any](fn func(A, B, C, D, E) (X, Y, Z)) func(A) func(B) func(C) func(D) func(E) (X, Y, Z) {
+	return func(a A) func(B) func(C) func(D) func(E) (X, Y, Z) {
+		return Curry43(func(b B, c C, d D, e E) (X, Y, Z) {
+			return fn(a, b, c, d, e)
+		})
+	}
+}
