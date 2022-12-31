@@ -6,6 +6,24 @@ func ArgRev0BA[A, B any](fn func(A, B)) func(B, A) {
 	}
 }
 
+func ArgRev1BA[A, B, X any](fn func(A, B) X) func(B, A) X {
+	return func(b B, a A) X {
+		return fn(a, b)
+	}
+}
+
+func ArgRev2BA[A, B, X, Y any](fn func(A, B) (X, Y)) func(B, A) (X, Y) {
+	return func(b B, a A) (X, Y) {
+		return fn(a, b)
+	}
+}
+
+func ArgRev3BA[A, B, X, Y, Z any](fn func(A, B) (X, Y, Z)) func(B, A) (X, Y, Z) {
+	return func(b B, a A) (X, Y, Z) {
+		return fn(a, b)
+	}
+}
+
 func ArgRev0ACB[A, B, C any](fn func(A, B, C)) func(A, C, B) {
 	return func(a A, c C, b B) {
 		fn(a, b, c)
