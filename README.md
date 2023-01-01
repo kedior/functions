@@ -25,14 +25,27 @@ Using the above functions, we can make the following method identical
 
 ```
 func SelectCodeFiles1(files []string) []string {
-  var isCodeFile func(string) bool = Substitute(
-    Curry21(ArgRev1BA(Some[string]))(ToArr(".go", ".cpp", ".c", ".java", ".js")),
-    Curry21(strings.HasSuffix),
-  )
-  return Filter(isCodeFile, files)
+  suffix := ToArr(".go", ".cpp", ".c", ".java", ".js")
+
+  some := Some[string]             // => (str->bool,str[]) -> bool
+  revSome := ArgRev1BA(some)       // => (str[],str->bool) -> bool
+  curryingSome := Curry21(revSome) // => (str[]) -> ((str->bool)->bool)
+  a := curryingSome(suffix)        // => (str->bool) -> bool
+  b := Curry21(strings.HasSuffix)  // => (str) -> ((str)->bool)
+
+  isCodeFile := Substitute(a, b)   // => (str) -> bool
+  return Filter(isCodeFile, files) // => str[]
 }
 
 func SelectCodeFiles2(files []string) []string {
+  return Filter(
+    Substitute(
+      Curry21(ArgRev1BA(Some[string]))(ToArr(".go", ".cpp", ".c", ".java", ".js")),
+      Curry21(strings.HasSuffix),
+    ), files)
+}
+
+func SelectCodeFiles3(files []string) []string {
   var codes []string
   for _, file := range files {
     for _, suffix := range []string{".go", ".cpp", ".c", ".java", ".js"} {
@@ -44,4 +57,5 @@ func SelectCodeFiles2(files []string) []string {
   }
   return codes
 }
+
 ```
